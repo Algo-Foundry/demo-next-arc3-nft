@@ -1,7 +1,7 @@
 import * as algotxn from "@/algorand";
 import algosdk from "algosdk";
-import { PROVIDER_ID, useWallet } from "@txnlab/use-wallet";
-import { useState, useEffect } from "react";
+import { useWallet } from "@txnlab/use-wallet";
+import { useState } from "react";
 import { getAlgodClient } from "../clients";
 import Button from "./Button";
 
