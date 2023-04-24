@@ -6,54 +6,41 @@ import { getAlgodClient } from "../clients";
 import Button from "./Button";
 
 export default function Transact() {
-  const { activeAddress, signTransactions, sendTransactions, providers } = useWallet();
+  const { activeAddress, signTransactions, sendTransactions } = useWallet();
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
   const [txnref, setTxnRef] = useState("");
-  const [network, setNetwork] = useState(process.env.NEXT_PUBLIC_NETWORK || "SandNet");
 
   const connectedAcc = activeAddress || "";
+  const network = process.env.NEXT_PUBLIC_NETWORK || "SandNet";
   const algod = getAlgodClient(network);
 
-  // kmd will default to SandNet
-  useEffect(() => {
-    const kmdProvider = providers?.find((p) => p.metadata.id === PROVIDER_ID.KMD);
-    if (kmdProvider?.isActive) {
-      setNetwork("SandNet");
-    } else {
-      setNetwork(process.env.NEXT_PUBLIC_NETWORK || "SandNet");
-    }
-  }, [providers]);
-
   const handleSetAmount = (value) => {
-    setAmount(Number(value));
+    setAmount(value);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const signAndSubmit = async (groupedTxn) => {
-      // reset txn ref
-      setTxnRef("");
+    // reset txn ref
+    setTxnRef("");
 
-      groupedTxn = algosdk.assignGroupID(groupedTxn);
-      const encodedTxns = groupedTxn.map((txn) => algosdk.encodeUnsignedTransaction(txn));
+    // validate input
+    if (!amount || Number(amount) <= 0) return;
 
-      try {
-        const signed = await signTransactions(encodedTxns);
-        const res = await sendTransactions(signed, 4);
-        setTxnRef(res.txId);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    // create txn
-    if (!amount) return;
+    // prepare txn
     let payload = [await algotxn.getPaymentTxn(algod, connectedAcc, receiver, Number(amount))];
+    const groupedTxn = algosdk.assignGroupID(payload);
+    const encodedTxns = groupedTxn.map((txn) => algosdk.encodeUnsignedTransaction(txn));
 
-    // sign txn and submit to chain
-    await signAndSubmit(payload);
+    // sign and submit to chain
+    try {
+      const signed = await signTransactions(encodedTxns);
+      const res = await sendTransactions(signed, 4);
+      setTxnRef(res.txId);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
