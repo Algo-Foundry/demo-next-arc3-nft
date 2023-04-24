@@ -38,5 +38,5 @@ source .env
 
 4. Run the Dapp on localhost
 ```
-yarn serve
+yarn dev
 ```
