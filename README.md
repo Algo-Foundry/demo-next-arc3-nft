@@ -6,21 +6,21 @@ This demo showcases the available wallet connectors for Algorand Dapps. They inc
 3. [Walletconnect](https://developer.algorand.org/docs/get-details/walletconnect/)
 4. Sandbox (kmd)
 
-Walletconnect is previously used to connect to Pera Algo Wallet, but Pera Algo Wallet has since introduced their own library to do the same.
+It uses the [use-wallet](https://github.com/TxnLab/use-wallet) library, which is a react hook that includes the above wallets. 
 
 Please create your sender and receiver accounts on those wallets first. Use the [dispenser](https://bank.testnet.algorand.network/) to fund your sender account.
 
-## Sandbox
-Please ensure that your sandbox is up and running before connecting to sandbox.
+## Running the demo on SandNet
+1. Please ensure that your sandbox is up and running before connecting to sandbox.
+2. Change the network variable `NEXT_PUBLIC_NETWORK` in the `.env` file from `TestNet` to `SandNet` before deploying the Dapp.
 
-## Switching to TestNet
+## Running the demo on TestNet
 
-Also, do switch the Algorand network to TestNet on both Pera and Defly app before using the demo.
+1. Change the network variable `NEXT_PUBLIC_NETWORK` in the `.env` file from `SandNet` to `TestNet` before deploying the Dapp.
+2. Switch the Algorand network to TestNet on both Pera and Defly app if you are connecting to the Dapp with them.
 
 - Pera: Settings > Developer Settings > Node Settings > TestNet
 - Defly: More > Preferences > Advanced > Developer Mode > TestNet
-
-Change the network variable `NEXT_PUBLIC_NETWORK` in the `.env` file from `SandNet` to `TestNet` before deploying the Dapp.
 
 ## Setup instructions
 
