@@ -23,7 +23,7 @@ export default function Connect() {
                         {provider.isConnected && (
                             <Button label="Disconnect" onClick={provider.disconnect} disabled={!provider.isConnected} />
                         )}
-                        {provider.isActive && (
+                        {!provider.isActive && (
                             <Button
                                 label="Set Active"
                                 onClick={provider.setActiveProvider}
