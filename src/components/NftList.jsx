@@ -17,7 +17,6 @@ function NftList() {
   useEffect(() => {
     const loadNfts = async () => {
       const nftList = await algotxn.fetchNFTs(algodClient);
-      console.log(nftList);
       setNfts(nftList);
     };
 
@@ -62,14 +61,14 @@ function NftList() {
 
   return (
     <>
-      {txnref && (
+      {activeAddress && txnref && (
         <p className="mb-4 text-left">
           <a href={txnUrl} target="_blank" className="text-blue-500">
             Tx ID: {txnref}
           </a>
         </p>
       )}
-      {nfts.map((item, index) => (
+      {activeAddress && nfts.map((item, index) => (
         <NftItem
           key={index}
           src={item.imgUrl}
