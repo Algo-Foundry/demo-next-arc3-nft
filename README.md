@@ -1,42 +1,43 @@
-# Wallet Connector Demo
-This demo showcases the available wallet connectors for Algorand Dapps. They include,
+# ARC3 NFT Demo
+Sample Dapp that deploys and transacts ARC3 NFTs. Allows user to connect to the Dapp and receive NFTs from the deployer.
 
-1. [Pera Algo Wallet](https://github.com/perawallet/connect)
-2. [Defly Wallet](https://github.com/blockshake-io/defly-connect)
-3. [Walletconnect](https://developer.algorand.org/docs/get-details/walletconnect/)
-4. Sandbox (kmd)
-
-It uses the [use-wallet](https://github.com/TxnLab/use-wallet) library, which is a react hook that includes the above wallets. 
-
-Please create your sender and receiver accounts on those wallets first. Use the [dispenser](https://bank.testnet.algorand.network/) to fund your sender account.
-
-## Running the demo on SandNet
-1. Please ensure that your sandbox is up and running before connecting to sandbox.
-2. Change the network variable `NEXT_PUBLIC_NETWORK` in the `.env` file from `TestNet` to `SandNet` before deploying the Dapp.
-
-## Running the demo on TestNet
-
-1. Change the network variable `NEXT_PUBLIC_NETWORK` in the `.env` file from `SandNet` to `TestNet` before deploying the Dapp.
-2. Switch the Algorand network to TestNet on both Pera and Defly app if you are connecting to the Dapp with them.
-
-- Pera: Settings > Developer Settings > Node Settings > TestNet
-- Defly: More > Preferences > Advanced > Developer Mode > TestNet
+2 transactions will be performed in order to receive the NFT
+1. Asset Opt In from the user
+2. Asset Transfer from deployer to user
 
 ## Setup instructions
 
-1. Install packages
+### Install packages
 ```
 yarn install
 ```
 
-2. Copy `.env.example` to `.env`.
+### Update environement variables
+1. Copy `.env.example` to `.env.local`.
+2. Add your deployer account menmonic and address.
+3. Set the network to either `SandNet` or `TestNet`
 
-3. Set env var
+### Setup Pinata IPFS
+1. Create a free account on [Pinata](https://www.pinata.cloud/)
+2. Generate API key via account page.
+3. Update `.env.local` file with the credentials.
+
+### Deploying Assets
+1. Run deployment script to create the ARC3 NFTs. 
 ```
-source .env
+yarn tsx scripts/deploy.js
 ```
 
-4. Run the Dapp on localhost
+### Run the Dapp on localhost
 ```
 yarn dev
 ```
+
+### Pinning content using Pinata
+Use the following methods to pin files/folders to IPFS
+
+- [pinFileToIPFS](https://www.npmjs.com/package/@pinata/sdk#pinFileToIPFS) - Pins a file to IPFS.
+- [pinFromFS](https://www.npmjs.com/package/@pinata/sdk#pinFromFS) - Pins a directory to IPFS. 
+
+For `pinFromFS`, windows users might encounter an issue where files are pinned to the wrong directory. Additional sub directories were created (i.e. `ipfs://<content_id>/Users/<usersname>/<repo directory>/assets/nft/<asset filename>`) instead of `ipfs://<content_id>/<asset_filename>`. You might need to tweak the image url accordingly in your JSON metadata.
+

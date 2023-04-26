@@ -15,7 +15,7 @@ const network = process.env.NEXT_PUBLIC_NETWORK || "SandNet";
 const algodClient = getAlgodClient(network);
 
 // get creator account
-const deployer = algosdk.mnemonicToSecretKey(process.env.DEPLOYER_MNEMONIC);
+const deployer = algosdk.mnemonicToSecretKey(process.env.NEXT_PUBLIC_DEPLOYER_MNEMONIC);
 
 (async () => {
   // check pinata connection
@@ -101,9 +101,6 @@ const deployer = algosdk.mnemonicToSecretKey(process.env.DEPLOYER_MNEMONIC);
         preparedAsset.url
       );
       console.log(await algotxns.signAndSubmit(algodClient, [createNftTxn], deployer));
-
-      // write created NFTs to JSON file
-      
     })
   );
 })();

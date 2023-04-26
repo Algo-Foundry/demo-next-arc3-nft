@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Navbar from "@/components/Navbar";
-import Transact from "@/components/Transact";
+import NftList from "@/components/NftList";
 
 export default function Home() {
     return (
@@ -14,7 +14,7 @@ export default function Home() {
             </Head>
             <Navbar/>
             <main className={styles.main}>
-                <Transact/>
+                <NftList />   
             </main>
         </>
     );
