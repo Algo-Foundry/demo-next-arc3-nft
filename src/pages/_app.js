@@ -1,26 +1,48 @@
 import "@/styles/globals.css";
-import { reconnectProviders, initializeProviders, WalletProvider, PROVIDER_ID } from "@txnlab/use-wallet";
+import {
+  reconnectProviders,
+  useInitializeProviders,
+  WalletProvider,
+  PROVIDER_ID,
+} from "@txnlab/use-wallet";
 import { useEffect } from "react";
 import { getNetworkCredentials } from "../clients";
+import { PeraWalletConnect } from "@perawallet/connect";
+import { DeflyWalletConnect } from "@blockshake/defly-connect";
 
 const network = process.env.NEXT_PUBLIC_NETWORK || "SandNet";
 const cred = getNetworkCredentials(network);
 
-const walletProviders = initializeProviders([PROVIDER_ID.WALLETCONNECT, PROVIDER_ID.PERA, PROVIDER_ID.DEFLY, PROVIDER_ID.KMD], {
-    network: network.toLowerCase(), //betanet, testnet, mainnet, sandnet
-    nodeServer: cred.algod.address || "",
-    nodeToken: cred.algod.token || "",
-    nodePort: cred.algod.port || "",
-});
-
 export default function App({ Component, pageProps }) {
-    useEffect(() => {
-        reconnectProviders(walletProviders);
-    }, []);
+  const providers = useInitializeProviders({
+    providers: [
+      {
+        id: PROVIDER_ID.PERA,
+        clientStatic: PeraWalletConnect,
+      },
+      {
+        id: PROVIDER_ID.DEFLY,
+        clientStatic: DeflyWalletConnect,
+      },
+      {
+        id: PROVIDER_ID.KMD,
+      },
+    ],
+    nodeConfig: {
+      network: network.toLowerCase(), //betanet, testnet, mainnet, sandnet
+      nodeServer: cred.algod.address || "",
+      nodeToken: cred.algod.token || "",
+      nodePort: cred.algod.port || "",
+    },
+  });
+  useEffect(() => {
+    reconnectProviders(providers);
+  }, []);
 
-    return (
-        <WalletProvider value={walletProviders}>
-            <Component {...pageProps} />
-        </WalletProvider>
-    );
+  return (
+    <WalletProvider value={providers}>
+      <Component {...pageProps} />
+    </WalletProvider>
+  );
 }
+
