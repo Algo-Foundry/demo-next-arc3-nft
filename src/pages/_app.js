@@ -1,11 +1,9 @@
 import "@/styles/globals.css";
 import {
-  reconnectProviders,
   useInitializeProviders,
   WalletProvider,
   PROVIDER_ID,
 } from "@txnlab/use-wallet";
-import { useEffect } from "react";
 import { getNetworkCredentials } from "../clients";
 import { PeraWalletConnect } from "@perawallet/connect";
 import { DeflyWalletConnect } from "@blockshake/defly-connect";
@@ -35,9 +33,6 @@ export default function App({ Component, pageProps }) {
       nodePort: cred.algod.port || "",
     },
   });
-  useEffect(() => {
-    reconnectProviders(providers);
-  }, []);
 
   return (
     <WalletProvider value={providers}>
